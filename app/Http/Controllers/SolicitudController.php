@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Solicitud;
+use Illuminate\Http\Request;
+
+class SolicitudController extends Controller
+{
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'nombre_completo'    => 'required|string|max:255',
+            'empresa'            => 'nullable|string|max:255',
+            'telefono'           => 'required|string|max:50',
+            'correo'             => 'required|email|max:255',
+            'pais_origen'        => 'nullable|string|max:255',
+            'ciudad_origen'      => 'nullable|string|max:255',
+            'pais_destino'       => 'nullable|string|max:255',
+            'ciudad_destino'     => 'nullable|string|max:255',
+            'fecha_recogida'     => 'required|date',
+            'tipo_carga'         => 'nullable|string|max:255',
+            'tipo_servicio'      => 'nullable|string|max:255',
+            'cantidad_bultos'    => 'nullable|integer',
+            'peso_bruto'         => 'nullable|numeric',
+            'dimensiones'        => 'nullable|string',
+            'servicios_aduaneros'=> 'nullable|string|max:10',
+        ]);
+
+        Solicitud::create($data);
+
+        return redirect()
+            ->route('formulario.show')
+            ->with('success', 'Gracias por completar el formulario. Tu solicitud ha sido enviada correctamente.');
+    }
+
+    public function index()
+    {
+        $solicitudes = Solicitud::latest()->paginate(20);
+
+        return view('admin.solicitudes.index', compact('solicitudes'));
+    }
+
+    public function aceptar(Solicitud $solicitud)
+    {
+        $solicitud->update(['estado' => 'aceptada']);
+
+        return redirect()->back()->with('success', 'Solicitud aceptada correctamente.');
+    }
+
+    public function rechazar(Solicitud $solicitud)
+    {
+        $solicitud->update(['estado' => 'rechazada']);
+
+        return redirect()->back()->with('success', 'Solicitud rechazada correctamente.');
+    }
+}
