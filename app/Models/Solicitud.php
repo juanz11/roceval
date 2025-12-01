@@ -9,6 +9,11 @@ class Solicitud extends Model
 {
     use HasFactory;
 
+    /**
+     * Tabla asociada al modelo.
+     */
+    protected $table = 'solicitudes';
+
     protected $fillable = [
         'nombre_completo',
         'empresa',

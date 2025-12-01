@@ -8,7 +8,13 @@
 </head>
 <body class="bg-light">
 <div class="container py-5">
-    <h1 class="mb-4">Solicitudes de Cotización</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">Solicitudes de Cotización</h1>
+        <form action="{{ route('admin.logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Cerrar sesión</button>
+        </form>
+    </div>
 
     @if (session('success'))
         <div class="alert alert-success">

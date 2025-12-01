@@ -36,6 +36,10 @@ class SolicitudController extends Controller
 
     public function index()
     {
+        if (!session('is_admin')) {
+            return redirect()->route('admin.login.show');
+        }
+
         $solicitudes = Solicitud::latest()->paginate(20);
 
         return view('admin.solicitudes.index', compact('solicitudes'));
@@ -43,6 +47,10 @@ class SolicitudController extends Controller
 
     public function aceptar(Solicitud $solicitud)
     {
+        if (!session('is_admin')) {
+            return redirect()->route('admin.login.show');
+        }
+
         $solicitud->update(['estado' => 'aceptada']);
 
         return redirect()->back()->with('success', 'Solicitud aceptada correctamente.');
@@ -50,6 +58,10 @@ class SolicitudController extends Controller
 
     public function rechazar(Solicitud $solicitud)
     {
+        if (!session('is_admin')) {
+            return redirect()->route('admin.login.show');
+        }
+
         $solicitud->update(['estado' => 'rechazada']);
 
         return redirect()->back()->with('success', 'Solicitud rechazada correctamente.');
