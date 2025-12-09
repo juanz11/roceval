@@ -39,11 +39,11 @@
 </nav>
 
 <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4 no-print">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4 no-print">
         <h1 class="mb-0">Cotización #{{ $cotizacion->id }}</h1>
-        <div class="d-flex gap-2">
-            <a href="{{ route('admin.solicitudes.cotizar', $cotizacion->solicitud) }}" class="btn btn-outline-secondary btn-sm">Editar cotización</a>
-            <button onclick="window.print()" class="btn btn-primary btn-sm">Imprimir / Guardar como PDF</button>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{{ route('admin.solicitudes.cotizar', $cotizacion->solicitud) }}" class="btn btn-outline-secondary btn-sm text-nowrap">Editar cotización</a>
+            <button onclick="window.print()" class="btn btn-primary btn-sm text-nowrap">Imprimir / Guardar como PDF</button>
         </div>
     </div>
 

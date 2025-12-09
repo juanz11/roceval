@@ -45,7 +45,8 @@
         </div>
     @endif
 
-    <table class="table table-striped table-bordered align-middle">
+    <div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle mb-0">
         <thead>
         <tr>
             <th>ID</th>
@@ -81,20 +82,20 @@
                     </span>
                 </td>
                 <td>
-                    <div class="d-flex gap-2">
+                    <div class="d-flex flex-wrap gap-2">
                         <form action="{{ route('admin.solicitudes.aceptar', $solicitud) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-success" {{ in_array($solicitud->estado, ['aceptada', 'cotizada']) ? 'disabled' : '' }}>Aceptar</button>
+                            <button type="submit" class="btn btn-sm btn-success text-nowrap" {{ in_array($solicitud->estado, ['aceptada', 'cotizada']) ? 'disabled' : '' }}>Aceptar</button>
                         </form>
                         <form action="{{ route('admin.solicitudes.rechazar', $solicitud) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-danger" {{ $solicitud->estado === 'rechazada' ? 'disabled' : '' }}>Rechazar</button>
+                            <button type="submit" class="btn btn-sm btn-danger text-nowrap" {{ $solicitud->estado === 'rechazada' ? 'disabled' : '' }}>Rechazar</button>
                         </form>
                         @if(in_array($solicitud->estado, ['aceptada', 'cotizada']))
-                            <a href="{{ route('admin.solicitudes.cotizar', $solicitud) }}" class="btn btn-sm btn-primary">Cotizar</a>
+                            <a href="{{ route('admin.solicitudes.cotizar', $solicitud) }}" class="btn btn-sm btn-primary text-nowrap">Cotizar</a>
                         @endif
                         @if($solicitud->cotizacion)
-                            <a href="{{ route('admin.cotizaciones.show', $solicitud->cotizacion) }}" class="btn btn-sm btn-outline-primary">Ver cotización</a>
+                            <a href="{{ route('admin.cotizaciones.show', $solicitud->cotizacion) }}" class="btn btn-sm btn-outline-primary text-nowrap">Ver cotización</a>
                         @endif
                     </div>
                 </td>
@@ -106,6 +107,7 @@
         @endforelse
         </tbody>
     </table>
+    </div>
 
     {{ $solicitudes->links() }}
 </div>

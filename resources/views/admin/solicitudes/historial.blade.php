@@ -39,7 +39,8 @@
         <h1 class="mb-0">Historial de Solicitudes</h1>
     </div>
 
-    <table class="table table-striped table-bordered align-middle">
+    <div class="table-responsive">
+    <table class="table table-striped table-bordered align-middle mb-0">
         <thead>
         <tr>
             <th>ID</th>
@@ -75,6 +76,7 @@
         @endforelse
         </tbody>
     </table>
+    </div>
 
     {{ $solicitudes->links() }}
 </div>
