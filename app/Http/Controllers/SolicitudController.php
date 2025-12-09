@@ -66,4 +66,13 @@ class SolicitudController extends Controller
 
         return redirect()->back()->with('success', 'Solicitud rechazada correctamente.');
     }
+
+    public function cotizar(Solicitud $solicitud)
+    {
+        if (!session('is_admin')) {
+            return redirect()->route('admin.login.show');
+        }
+
+        return view('admin.solicitudes.cotizar', compact('solicitud'));
+    }
 }

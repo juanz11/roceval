@@ -32,3 +32,6 @@ Route::post('/admin/solicitudes/{solicitud}/aceptar', [SolicitudController::clas
 
 Route::post('/admin/solicitudes/{solicitud}/rechazar', [SolicitudController::class, 'rechazar'])
     ->name('admin.solicitudes.rechazar');
+
+Route::get('/admin/solicitudes/{solicitud}/cotizar', [SolicitudController::class, 'cotizar'])
+    ->name('admin.solicitudes.cotizar');
