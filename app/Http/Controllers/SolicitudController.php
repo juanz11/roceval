@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Solicitud;
+use App\Models\Cotizacion;
 use Illuminate\Http\Request;
 
 class SolicitudController extends Controller
@@ -83,7 +84,50 @@ class SolicitudController extends Controller
         if (!session('is_admin')) {
             return redirect()->route('admin.login.show');
         }
+        $cotizacion = $solicitud->cotizacion;
 
-        return view('admin.solicitudes.cotizar', compact('solicitud'));
+        return view('admin.solicitudes.cotizar', compact('solicitud', 'cotizacion'));
+    }
+
+    public function guardarCotizacion(Request $request, Solicitud $solicitud)
+    {
+        if (!session('is_admin')) {
+            return redirect()->route('admin.login.show');
+        }
+
+        $data = $request->validate([
+            'precio_total'    => 'required|numeric|min:0',
+            'moneda'          => 'required|string|max:10',
+            'tiempo_transito' => 'nullable|string|max:255',
+            'validez_oferta'  => 'nullable|string|max:255',
+            'incluye_aduanas' => 'required|boolean',
+            'incluye_seguro'  => 'required|boolean',
+            'observaciones'   => 'nullable|string',
+        ]);
+
+        $data['incluye_aduanas'] = (bool) $data['incluye_aduanas'];
+        $data['incluye_seguro'] = (bool) $data['incluye_seguro'];
+
+        Cotizacion::updateOrCreate(
+            ['solicitud_id' => $solicitud->id],
+            $data
+        );
+
+        $solicitud->update(['estado' => 'cotizada']);
+
+        return redirect()
+            ->route('admin.cotizaciones.show', $solicitud->cotizacion ?? $solicitud->refresh()->cotizacion)
+            ->with('success', 'Cotización guardada correctamente.');
+    }
+
+    public function verCotizacion(Cotizacion $cotizacion)
+    {
+        if (!session('is_admin')) {
+            return redirect()->route('admin.login.show');
+        }
+
+        $cotizacion->load('solicitud');
+
+        return view('admin.cotizaciones.show', compact('cotizacion'));
     }
 }

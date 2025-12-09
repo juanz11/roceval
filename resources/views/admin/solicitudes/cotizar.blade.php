@@ -69,10 +69,102 @@
     <div class="card">
         <div class="card-header">Información para cotizar</div>
         <div class="card-body">
-            <p class="text-muted mb-3">
-                Aquí puedes añadir el formulario de cotización (precio, moneda, tiempos, observaciones, etc.).
-                Por ahora esta pantalla solo muestra la información de la solicitud para facilitarte la cotización manual.
-            </p>
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form action="{{ route('admin.solicitudes.cotizar.guardar', $solicitud) }}" method="POST">
+                @csrf
+
+                <div class="row mb-3">
+                    <div class="col-md-4 mb-3">
+                        <label for="precio_total" class="form-label">Precio total *</label>
+                        <input type="number" step="0.01" min="0" class="form-control" id="precio_total" name="precio_total" required value="{{ old('precio_total', $cotizacion->precio_total ?? '') }}">
+                        @error('precio_total')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="moneda" class="form-label">Moneda *</label>
+                        <select id="moneda" name="moneda" class="form-select" required>
+                            @php
+                                $monedaActual = old('moneda', $cotizacion->moneda ?? 'USD');
+                            @endphp
+                            <option value="USD" {{ $monedaActual === 'USD' ? 'selected' : '' }}>USD</option>
+                            <option value="COP" {{ $monedaActual === 'COP' ? 'selected' : '' }}>COP</option>
+                            <option value="VES" {{ $monedaActual === 'VES' ? 'selected' : '' }}>VES</option>
+                        </select>
+                        @error('moneda')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="tiempo_transito" class="form-label">Tiempo de tránsito estimado</label>
+                        <input type="text" class="form-control" id="tiempo_transito" name="tiempo_transito" placeholder="Ej: 5-7 días" value="{{ old('tiempo_transito', $cotizacion->tiempo_transito ?? '') }}">
+                        @error('tiempo_transito')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label for="validez_oferta" class="form-label">Validez de la oferta</label>
+                        <input type="text" class="form-control" id="validez_oferta" name="validez_oferta" placeholder="Ej: 10 días a partir de la fecha" value="{{ old('validez_oferta', $cotizacion->validez_oferta ?? '') }}">
+                        @error('validez_oferta')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label d-block">¿Incluye servicios aduaneros? *</label>
+                        @php
+                            $aduanasActual = old('incluye_aduanas', isset($cotizacion) ? (int) $cotizacion->incluye_aduanas : 1);
+                        @endphp
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="incluye_aduanas" id="aduanas_si" value="1" {{ $aduanasActual ? 'checked' : '' }}>
+                            <label class="form-check-label" for="aduanas_si">Sí</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="incluye_aduanas" id="aduanas_no" value="0" {{ !$aduanasActual ? 'checked' : '' }}>
+                            <label class="form-check-label" for="aduanas_no">No</label>
+                        </div>
+                        @error('incluye_aduanas')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label d-block">¿Incluye seguro? *</label>
+                        @php
+                            $seguroActual = old('incluye_seguro', isset($cotizacion) ? (int) $cotizacion->incluye_seguro : 0);
+                        @endphp
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="incluye_seguro" id="seguro_si" value="1" {{ $seguroActual ? 'checked' : '' }}>
+                            <label class="form-check-label" for="seguro_si">Sí</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="incluye_seguro" id="seguro_no" value="0" {{ !$seguroActual ? 'checked' : '' }}>
+                            <label class="form-check-label" for="seguro_no">No</label>
+                        </div>
+                        @error('incluye_seguro')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="observaciones" class="form-label">Observaciones</label>
+                    <textarea class="form-control" id="observaciones" name="observaciones" rows="4" placeholder="Detalles adicionales, condiciones especiales, etc.">{{ old('observaciones', $cotizacion->observaciones ?? '') }}</textarea>
+                    @error('observaciones')
+                        <div class="text-danger small">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    {{ isset($cotizacion) ? 'Actualizar cotización' : 'Guardar cotización' }}
+                </button>
+            </form>
         </div>
     </div>
 </div>

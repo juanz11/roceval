@@ -32,4 +32,9 @@ class Solicitud extends Model
         'servicios_aduaneros',
         'estado',
     ];
+
+    public function cotizacion()
+    {
+        return $this->hasOne(Cotizacion::class);
+    }
 }

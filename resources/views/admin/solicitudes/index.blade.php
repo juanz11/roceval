@@ -70,22 +70,31 @@
                 <td>{{ $solicitud->ciudad_origen }} ({{ $solicitud->pais_origen }})</td>
                 <td>{{ $solicitud->ciudad_destino }} ({{ $solicitud->pais_destino }})</td>
                 <td>
-                    <span class="badge bg-{{ $solicitud->estado === 'pendiente' ? 'warning' : ($solicitud->estado === 'aceptada' ? 'success' : 'danger') }}">
-                        {{ ucfirst($solicitud->estado) }}
+                    @php
+                        $estado = $solicitud->estado;
+                        $color = $estado === 'pendiente'
+                            ? 'warning'
+                            : ($estado === 'aceptada' ? 'success' : ($estado === 'cotizada' ? 'info' : 'danger'));
+                    @endphp
+                    <span class="badge bg-{{ $color }}">
+                        {{ ucfirst($estado) }}
                     </span>
                 </td>
                 <td>
                     <div class="d-flex gap-2">
                         <form action="{{ route('admin.solicitudes.aceptar', $solicitud) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn btn-sm btn-success" {{ $solicitud->estado === 'aceptada' ? 'disabled' : '' }}>Aceptar</button>
+                            <button type="submit" class="btn btn-sm btn-success" {{ in_array($solicitud->estado, ['aceptada', 'cotizada']) ? 'disabled' : '' }}>Aceptar</button>
                         </form>
                         <form action="{{ route('admin.solicitudes.rechazar', $solicitud) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-sm btn-danger" {{ $solicitud->estado === 'rechazada' ? 'disabled' : '' }}>Rechazar</button>
                         </form>
-                        @if($solicitud->estado === 'aceptada')
+                        @if(in_array($solicitud->estado, ['aceptada', 'cotizada']))
                             <a href="{{ route('admin.solicitudes.cotizar', $solicitud) }}" class="btn btn-sm btn-primary">Cotizar</a>
+                        @endif
+                        @if($solicitud->cotizacion)
+                            <a href="{{ route('admin.cotizaciones.show', $solicitud->cotizacion) }}" class="btn btn-sm btn-outline-primary">Ver cotización</a>
                         @endif
                     </div>
                 </td>

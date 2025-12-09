@@ -36,5 +36,11 @@ Route::post('/admin/solicitudes/{solicitud}/rechazar', [SolicitudController::cla
 Route::get('/admin/solicitudes/{solicitud}/cotizar', [SolicitudController::class, 'cotizar'])
     ->name('admin.solicitudes.cotizar');
 
+Route::post('/admin/solicitudes/{solicitud}/cotizar', [SolicitudController::class, 'guardarCotizacion'])
+    ->name('admin.solicitudes.cotizar.guardar');
+
 Route::get('/admin/historial', [SolicitudController::class, 'historial'])
     ->name('admin.solicitudes.historial');
+
+Route::get('/admin/cotizaciones/{cotizacion}', [SolicitudController::class, 'verCotizacion'])
+    ->name('admin.cotizaciones.show');
