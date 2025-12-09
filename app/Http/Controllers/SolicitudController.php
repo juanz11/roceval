@@ -45,6 +45,17 @@ class SolicitudController extends Controller
         return view('admin.solicitudes.index', compact('solicitudes'));
     }
 
+    public function historial()
+    {
+        if (!session('is_admin')) {
+            return redirect()->route('admin.login.show');
+        }
+
+        $solicitudes = Solicitud::orderByDesc('created_at')->paginate(50);
+
+        return view('admin.solicitudes.historial', compact('solicitudes'));
+    }
+
     public function aceptar(Solicitud $solicitud)
     {
         if (!session('is_admin')) {

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administración de Solicitudes</title>
+    <title>Historial de Solicitudes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -17,10 +17,10 @@
         <div class="collapse navbar-collapse" id="adminNavbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ route('admin.solicitudes.index') }}">Solicitudes</a>
+                    <a class="nav-link" href="{{ route('admin.solicitudes.index') }}">Solicitudes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.solicitudes.historial') }}">Historial</a>
+                    <a class="nav-link active" aria-current="page" href="{{ route('admin.solicitudes.historial') }}">Historial</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/') }}">Inicio público</a>
@@ -36,14 +36,8 @@
 
 <div class="container py-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">Solicitudes de Cotización</h1>
+        <h1 class="mb-0">Historial de Solicitudes</h1>
     </div>
-
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
 
     <table class="table table-striped table-bordered align-middle">
         <thead>
@@ -56,7 +50,6 @@
             <th>Origen</th>
             <th>Destino</th>
             <th>Estado</th>
-            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -74,25 +67,10 @@
                         {{ ucfirst($solicitud->estado) }}
                     </span>
                 </td>
-                <td>
-                    <div class="d-flex gap-2">
-                        <form action="{{ route('admin.solicitudes.aceptar', $solicitud) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-sm btn-success" {{ $solicitud->estado === 'aceptada' ? 'disabled' : '' }}>Aceptar</button>
-                        </form>
-                        <form action="{{ route('admin.solicitudes.rechazar', $solicitud) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-sm btn-danger" {{ $solicitud->estado === 'rechazada' ? 'disabled' : '' }}>Rechazar</button>
-                        </form>
-                        @if($solicitud->estado === 'aceptada')
-                            <a href="{{ route('admin.solicitudes.cotizar', $solicitud) }}" class="btn btn-sm btn-primary">Cotizar</a>
-                        @endif
-                    </div>
-                </td>
             </tr>
         @empty
             <tr>
-                <td colspan="9" class="text-center">No hay solicitudes registradas todavía.</td>
+                <td colspan="8" class="text-center">No hay solicitudes registradas en el historial.</td>
             </tr>
         @endforelse
         </tbody>
