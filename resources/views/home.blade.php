@@ -11,8 +11,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #f1f3f5; /* gris claro de fondo */
+            background:
+                radial-gradient(circle at top left, rgba(0, 204, 255, 0.35), transparent 55%),
+                radial-gradient(circle at bottom right, rgba(0, 123, 255, 0.4), transparent 55%),
+                #f1f3f5; /* gris claro de fondo */
             color: #ffffff;
+            background-image: url('{{ asset('img/157973.png') }}');
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+            background-attachment: fixed;
+            background-blend-mode: soft-light;
         }
         .card-home {
             max-width: 900px;
@@ -24,7 +33,7 @@
             max-height: 90px;
         }
         .home-sidebar {
-            background-color: #0b1b34; /* azul muy oscuro que combina con negro y logo */
+            background: linear-gradient(160deg, #061020 0%, #0b1b34 55%, #0f3b72 100%);
         }
         .home-primary-text {
             color: #0b1b34; /* mismo azul oscuro para textos principales en la parte blanca */
