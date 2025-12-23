@@ -54,7 +54,7 @@
                 </select>
             </div>
             <div class="col-md-6 mb-3">
-                <label for="ciudad_origen" class="form-label">Ciudad/Departamento de Recogida</label>
+                <label for="ciudad_origen" class="form-label">Ciudad/Departamento</label>
                 <input type="text" class="form-control" id="ciudad_origen" name="ciudad_origen" placeholder="Ej: Bogotá, Medellín, Cali...">
             </div>
         </div>
@@ -74,7 +74,7 @@
         </div>
 
         <div class="mb-3">
-            <label for="fecha_recogida" class="form-label">Fecha Estimada de Recogida *</label>
+            <label for="fecha_recogida" class="form-label">Fecha Estimada *</label>
             <input type="date" class="form-control" id="fecha_recogida" name="fecha_recogida" required>
         </div>
 
