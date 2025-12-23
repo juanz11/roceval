@@ -28,6 +28,7 @@
             width: 100%;
             border-radius: 1rem;
             overflow: hidden;
+            margin: 1rem auto;
         }
         .logo-img {
             max-height: 90px;
@@ -53,6 +54,20 @@
         .btn-home-outline:hover {
             background-color: #0b1b34;
             color: #ffffff;
+        }
+
+        @media (max-width: 576px) {
+            body {
+                align-items: flex-start;
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+                background-attachment: scroll;
+                background-size: cover;
+            }
+
+            .card-home {
+                margin: 0 auto;
+            }
         }
     </style>
 </head>

@@ -34,7 +34,7 @@
     </div>
 </nav>
 
-<div class="container py-5">
+<div class="container py-4 py-md-5 px-2 px-md-0">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0">Solicitudes de Cotización</h1>
     </div>

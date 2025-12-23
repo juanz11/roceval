@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-<div class="container py-5">
+<div class="container py-4 py-md-5 px-3 px-md-0">
     <h1 class="mb-4">Solicitud de Cotización de Transporte</h1>
 
     @if(session('success'))
@@ -16,7 +16,7 @@
         </div>
     @endif
 
-    <form action="{{ route('formulario.enviar') }}" method="POST" class="card p-4 shadow-sm bg-white">
+    <form action="{{ route('formulario.enviar') }}" method="POST" class="card p-3 p-md-4 shadow-sm bg-white">
         @csrf
 
         <h4 class="mb-3">Sección 1: Datos de Contacto</h4>
