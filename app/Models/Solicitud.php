@@ -23,6 +23,8 @@ class Solicitud extends Model
         'ciudad_origen',
         'pais_destino',
         'ciudad_destino',
+        'fecha_inicial',
+        'fecha_final',
         'fecha_recogida',
         'tipo_carga',
         'tipo_servicio',

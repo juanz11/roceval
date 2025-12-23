@@ -19,7 +19,8 @@ class SolicitudController extends Controller
             'ciudad_origen'      => 'nullable|string|max:255',
             'pais_destino'       => 'nullable|string|max:255',
             'ciudad_destino'     => 'nullable|string|max:255',
-            'fecha_recogida'     => 'required|date',
+            'fecha_inicial'      => 'required|date',
+            'fecha_final'        => 'required|date|after_or_equal:fecha_inicial',
             'tipo_carga'         => 'nullable|string|max:255',
             'tipo_servicio'      => 'nullable|string|max:255',
             'cantidad_bultos'    => 'nullable|integer',
@@ -27,6 +28,8 @@ class SolicitudController extends Controller
             'dimensiones'        => 'nullable|string',
             'servicios_aduaneros'=> 'nullable|string|max:10',
         ]);
+
+        $data['fecha_recogida'] = $data['fecha_inicial'];
 
         Solicitud::create($data);
 

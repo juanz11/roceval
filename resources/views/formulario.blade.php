@@ -74,8 +74,17 @@
         </div>
 
         <div class="mb-3">
-            <label for="fecha_recogida" class="form-label">Fecha Estimada *</label>
-            <input type="date" class="form-control" id="fecha_recogida" name="fecha_recogida" required>
+            <label class="form-label">Fecha Estimada *</label>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="fecha_inicial" class="form-label">Fecha inicial *</label>
+                    <input type="date" class="form-control" id="fecha_inicial" name="fecha_inicial" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="fecha_final" class="form-label">Fecha final *</label>
+                    <input type="date" class="form-control" id="fecha_final" name="fecha_final" required>
+                </div>
+            </div>
         </div>
 
         <hr class="my-4">

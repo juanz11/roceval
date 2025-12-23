@@ -58,7 +58,13 @@
                 <div class="card-body">
                     <p class="mb-1"><strong>Origen:</strong> {{ $solicitud->ciudad_origen }} ({{ $solicitud->pais_origen }})</p>
                     <p class="mb-1"><strong>Destino:</strong> {{ $solicitud->ciudad_destino }} ({{ $solicitud->pais_destino }})</p>
-                    <p class="mb-1"><strong>Fecha de recogida:</strong> {{ $solicitud->fecha_recogida }}</p>
+                    <p class="mb-1"><strong>Fechas estimadas:</strong>
+                        @if($solicitud->fecha_inicial && $solicitud->fecha_final)
+                            {{ $solicitud->fecha_inicial }} - {{ $solicitud->fecha_final }}
+                        @else
+                            {{ $solicitud->fecha_recogida }}
+                        @endif
+                    </p>
                     <p class="mb-1"><strong>Tipo de carga:</strong> {{ $solicitud->tipo_carga ?? 'N/A' }}</p>
                     <p class="mb-1"><strong>Tipo de servicio:</strong> {{ $solicitud->tipo_servicio ?? 'N/A' }}</p>
                 </div>
