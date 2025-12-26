@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\ChoferController;
 
 Route::get('/', function () {
     return view('home');
@@ -44,3 +45,12 @@ Route::get('/admin/historial', [SolicitudController::class, 'historial'])
 
 Route::get('/admin/cotizaciones/{cotizacion}', [SolicitudController::class, 'verCotizacion'])
     ->name('admin.cotizaciones.show');
+
+Route::get('/admin/choferes', [ChoferController::class, 'index'])->name('admin.choferes.index');
+Route::get('/admin/choferes/create', [ChoferController::class, 'create'])->name('admin.choferes.create');
+Route::post('/admin/choferes', [ChoferController::class, 'store'])->name('admin.choferes.store');
+Route::get('/admin/choferes/{chofer}', [ChoferController::class, 'show'])->name('admin.choferes.show');
+Route::get('/admin/choferes/{chofer}/edit', [ChoferController::class, 'edit'])->name('admin.choferes.edit');
+Route::put('/admin/choferes/{chofer}', [ChoferController::class, 'update'])->name('admin.choferes.update');
+Route::delete('/admin/choferes/{chofer}', [ChoferController::class, 'destroy'])->name('admin.choferes.destroy');
+Route::delete('/admin/choferes/{chofer}/documentos/{documento}', [ChoferController::class, 'destroyDocumento'])->name('admin.choferes.documentos.destroy');

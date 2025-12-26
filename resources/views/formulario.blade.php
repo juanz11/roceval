@@ -51,6 +51,7 @@
                 <select id="pais_origen" name="pais_origen" class="form-select">
                     <option value="Colombia" selected>Colombia</option>
                     <option value="Venezuela">Venezuela</option>
+                    <option value="Panamá">Panamá</option>
                 </select>
             </div>
             <div class="col-md-6 mb-3">
@@ -65,6 +66,7 @@
                 <select id="pais_destino" name="pais_destino" class="form-select">
                     <option value="Venezuela" selected>Venezuela</option>
                     <option value="Colombia">Colombia</option>
+                    <option value="Panamá">Panamá</option>
                 </select>
             </div>
             <div class="col-md-6 mb-3">

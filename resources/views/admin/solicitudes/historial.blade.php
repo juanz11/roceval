@@ -23,6 +23,9 @@
                     <a class="nav-link active" aria-current="page" href="{{ route('admin.solicitudes.historial') }}">Historial</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.choferes.index') }}">Choferes</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ url('/') }}">Inicio público</a>
                 </li>
             </ul>

@@ -113,6 +113,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.solicitudes.historial') }}">Historial</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.choferes.index') }}">Choferes</a>
+                </li>
             </ul>
             <form class="d-flex" action="{{ route('admin.logout') }}" method="POST">
                 @csrf
