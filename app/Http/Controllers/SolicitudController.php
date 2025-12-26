@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CotizacionGeneradaMail;
+use App\Mail\SolicitudAceptadaMail;
 use App\Models\Solicitud;
 use App\Models\Cotizacion;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class SolicitudController extends Controller
 {
@@ -68,6 +72,16 @@ class SolicitudController extends Controller
 
         $solicitud->update(['estado' => 'aceptada']);
 
+        $adminEmails = User::where('role', 'admin')->pluck('email')->filter()->values()->all();
+
+        try {
+            Mail::to($solicitud->correo)
+                ->cc($adminEmails)
+                ->send(new SolicitudAceptadaMail($solicitud));
+        } catch (\Throwable $e) {
+            // No interrumpir el flujo del panel si falla el correo.
+        }
+
         return redirect()->back()->with('success', 'Solicitud aceptada correctamente.');
     }
 
@@ -118,8 +132,33 @@ class SolicitudController extends Controller
 
         $solicitud->update(['estado' => 'cotizada']);
 
+        $cotizacion = $solicitud->cotizacion ?? $solicitud->refresh()->cotizacion;
+        $cotizacion->load('solicitud');
+
+        $adminEmails = User::where('role', 'admin')->pluck('email')->filter()->values()->all();
+
+        try {
+            $mail = new CotizacionGeneradaMail($cotizacion);
+
+            $filename = 'cotizacion_' . $cotizacion->id . '.pdf';
+
+            if (class_exists('Barryvdh\\DomPDF\\Facade\\Pdf')) {
+                $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.cotizacion', ['cotizacion' => $cotizacion]);
+                $mail->attachCotizacionPdf($filename, $pdf->output());
+            } else {
+                $html = view('pdf.cotizacion', ['cotizacion' => $cotizacion])->render();
+                $mail->attachCotizacionHtml('cotizacion_' . $cotizacion->id . '.html', $html);
+            }
+
+            Mail::to($cotizacion->solicitud->correo)
+                ->cc($adminEmails)
+                ->send($mail);
+        } catch (\Throwable $e) {
+            // No interrumpir el flujo del panel si falla el correo/adjunto.
+        }
+
         return redirect()
-            ->route('admin.cotizaciones.show', $solicitud->cotizacion ?? $solicitud->refresh()->cotizacion)
+            ->route('admin.cotizaciones.show', $cotizacion)
             ->with('success', 'Cotización guardada correctamente.');
     }
 

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminAuthController extends Controller
 {
@@ -14,27 +16,34 @@ class AdminAuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => 'required|string',
+            'email' => 'required|email',
             'password' => 'required|string',
         ]);
 
-        $envUser = env('ADMIN_USER', 'admin');
-        $envPass = env('ADMIN_PASSWORD', 'admin123');
+        $user = User::where('email', $credentials['email'])->first();
 
-        if ($credentials['username'] === $envUser && $credentials['password'] === $envPass) {
-            $request->session()->put('is_admin', true);
-
-            return redirect()->route('admin.solicitudes.index');
+        if (!$user || !Hash::check($credentials['password'], $user->password)) {
+            return back()->withErrors([
+                'email' => 'Usuario o contraseña incorrectos.',
+            ])->onlyInput('email');
         }
 
-        return back()->withErrors([
-            'username' => 'Usuario o contraseña incorrectos.',
-        ])->onlyInput('username');
+        if (($user->role ?? 'visitor') !== 'admin') {
+            return back()->withErrors([
+                'email' => 'No tienes permisos para acceder al panel.',
+            ])->onlyInput('email');
+        }
+
+        $request->session()->put('is_admin', true);
+        $request->session()->put('admin_user_id', $user->id);
+
+        return redirect()->route('admin.solicitudes.index');
     }
 
     public function logout(Request $request)
     {
         $request->session()->forget('is_admin');
+        $request->session()->forget('admin_user_id');
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
