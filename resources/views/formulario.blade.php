@@ -107,10 +107,6 @@
                     <input class="form-check-input" type="radio" name="tipo_servicio" id="servicio_ftl" value="FTL" checked>
                     <label class="form-check-label" for="servicio_ftl">FTL (Contenedor/Camión Completo)</label>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="tipo_servicio" id="servicio_ltl" value="LTL">
-                    <label class="form-check-label" for="servicio_ltl">LTL (Carga Consolidada/Parcial)</label>
-                </div>
             </div>
         </div>
 
