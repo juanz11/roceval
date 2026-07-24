@@ -282,10 +282,23 @@
                 <div style="font-size: 0.8rem;" class="mb-3">
                     <p class="mb-1">El pago de las facturas se realizaría de la siguiente manera:</p>
                     <p class="mb-1"><strong>Depósito en la cuenta de TRANSPORTE Y COMERCIALIZADORA ROCEVAL S.A.S:</strong></p>
+
+                    <p class="mb-1"><strong>Transferencia en pesos (COP):</strong></p>
                     <ul class="mb-2">
                         <li>Tipo: Cuenta de ahorro</li>
                         <li>Número de cuenta: 82400002244</li>
                         <li>Banco: Bancolombia</li>
+                        <li>Beneficiario: Transporte y Comercializadora Roceval S.A.S</li>
+                        <li>NIT: 901.101.398-8</li>
+                        <li>Correo: transporteroceval@gmail.com</li>
+                    </ul>
+
+                    <p class="mb-1"><strong>Transferencia en dólares (USD):</strong></p>
+                    <ul class="mb-2">
+                        <li>Tipo: Cuenta corriente</li>
+                        <li>Número de cuenta: POR DEFINIR</li>
+                        <li>Banco: POR DEFINIR</li>
+                        <li>SWIFT / ABA: POR DEFINIR</li>
                         <li>Beneficiario: Transporte y Comercializadora Roceval S.A.S</li>
                         <li>NIT: 901.101.398-8</li>
                         <li>Correo: transporteroceval@gmail.com</li>
