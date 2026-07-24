@@ -162,6 +162,29 @@
                     </div>
                 </div>
 
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label for="chofer_id" class="form-label">Chofer asociado</label>
+                        @php
+                            $choferActual = old('chofer_id', $cotizacion->chofer_id ?? '');
+                        @endphp
+                        <select id="chofer_id" name="chofer_id" class="form-select">
+                            <option value="">Sin chofer asignado</option>
+                            @foreach($choferes as $chofer)
+                                <option value="{{ $chofer->id }}" {{ (string) $choferActual === (string) $chofer->id ? 'selected' : '' }}>
+                                    {{ $chofer->nombre_completo }} - C.I. {{ $chofer->cedula }}@if($chofer->placa_chuto) (Placa {{ $chofer->placa_chuto }})@endif
+                                </option>
+                            @endforeach
+                        </select>
+                        @if($choferes->isEmpty())
+                            <div class="form-text">No hay choferes registrados. <a href="{{ route('admin.choferes.create') }}">Registrar chofer</a>.</div>
+                        @endif
+                        @error('chofer_id')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
                 <div class="mb-3">
                     <label for="observaciones" class="form-label">Observaciones</label>
                     <textarea class="form-control" id="observaciones" name="observaciones" rows="4" placeholder="Detalles adicionales, condiciones especiales, etc.">{{ old('observaciones', $cotizacion->observaciones ?? '') }}</textarea>

@@ -13,6 +13,7 @@ class Cotizacion extends Model
 
     protected $fillable = [
         'solicitud_id',
+        'chofer_id',
         'precio_total',
         'moneda',
         'tiempo_transito',
@@ -25,5 +26,10 @@ class Cotizacion extends Model
     public function solicitud()
     {
         return $this->belongsTo(Solicitud::class);
+    }
+
+    public function chofer()
+    {
+        return $this->belongsTo(Chofer::class);
     }
 }

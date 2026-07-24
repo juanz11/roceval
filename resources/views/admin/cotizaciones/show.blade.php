@@ -210,6 +210,31 @@
                 </p>
             </div>
 
+            @if($cotizacion->chofer)
+                <div class="section-title">Chofer asignado</div>
+
+                <table class="table table-bordered table-sm table-condensed mb-3">
+                    <tbody>
+                    <tr>
+                        <th style="width: 30%;">Nombre</th>
+                        <td>{{ $cotizacion->chofer->nombre_completo }}</td>
+                    </tr>
+                    <tr>
+                        <th>Cédula</th>
+                        <td>{{ $cotizacion->chofer->cedula }}</td>
+                    </tr>
+                    <tr>
+                        <th>Chuto</th>
+                        <td>{{ $cotizacion->chofer->placa_chuto ?: 'N/A' }} - {{ $cotizacion->chofer->marca_chuto ?: 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Batea</th>
+                        <td>{{ $cotizacion->chofer->placa_batea ?: 'N/A' }} - {{ $cotizacion->chofer->marca_batea ?: 'N/A' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            @endif
+
             <div class="section-title">Tarifa cubre / no cubre</div>
 
             <div class="row" style="font-size: 0.8rem;">

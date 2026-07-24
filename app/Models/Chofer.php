@@ -32,4 +32,14 @@ class Chofer extends Model
     {
         return $this->hasMany(ChoferDocumento::class);
     }
+
+    public function cotizaciones()
+    {
+        return $this->hasMany(Cotizacion::class);
+    }
+
+    public function getNombreCompletoAttribute(): string
+    {
+        return trim($this->nombre . ' ' . ($this->apellidos ?? ''));
+    }
 }
