@@ -63,33 +63,13 @@
         </tr>
     </table>
 
-    @if($cotizacion->chofer)
-        <h2>Chofer asignado</h2>
-        <table>
-            <tr>
-                <th>Nombre</th>
-                <td>{{ $cotizacion->chofer->nombre_completo }}</td>
-            </tr>
-            <tr>
-                <th>Cédula</th>
-                <td>{{ $cotizacion->chofer->cedula }}</td>
-            </tr>
-            <tr>
-                <th>Chuto</th>
-                <td>{{ $cotizacion->chofer->placa_chuto ?: 'N/A' }} - {{ $cotizacion->chofer->marca_chuto ?: 'N/A' }}</td>
-            </tr>
-            <tr>
-                <th>Batea</th>
-                <td>{{ $cotizacion->chofer->placa_batea ?: 'N/A' }} - {{ $cotizacion->chofer->marca_batea ?: 'N/A' }}</td>
-            </tr>
-        </table>
-    @endif
+
 
     <h2>Detalle de cotización</h2>
     <table>
         <tr>
             <th>Precio total</th>
-            <td class="right">{{ number_format($cotizacion->precio_total, 2) }} {{ $cotizacion->moneda }}</td>
+            <td class="right">{{ number_format($cotizacion->precio_total, 2, ',', '.') }} {{ $cotizacion->moneda }}</td>
         </tr>
         <tr>
             <th>Tiempo de tránsito</th>
@@ -106,6 +86,26 @@
         <tr>
             <th>Incluye seguro</th>
             <td>{{ $cotizacion->incluye_seguro ? 'Sí' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Tipo de documentación</th>
+            <td>{{ $cotizacion->tipo_documentacion === 'DTAI' ? 'DTAI' : 'Documentación simple' }}</td>
+        </tr>
+        <tr>
+            <th>Doble papelería</th>
+            <td>{{ $cotizacion->doble_papeleria ? 'Sí' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Gastos logísticos</th>
+            <td class="right">{{ number_format($cotizacion->gastos_logisticos, 2, ',', '.') }} {{ $cotizacion->moneda }}</td>
+        </tr>
+        <tr>
+            <th>Cruce de frontera</th>
+            <td class="right">{{ number_format($cotizacion->cruce_frontera, 2, ',', '.') }} {{ $cotizacion->moneda }}</td>
+        </tr>
+        <tr>
+            <th>Transbordo</th>
+            <td class="right">{{ number_format($cotizacion->transbordo, 2, ',', '.') }} {{ $cotizacion->moneda }}</td>
         </tr>
         <tr>
             <th>Observaciones</th>

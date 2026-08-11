@@ -191,7 +191,7 @@
                     <td>{{ $sol->ciudad_origen }} ({{ $sol->pais_origen }})</td>
                     <td>{{ $sol->ciudad_destino }} ({{ $sol->pais_destino }})</td>
                     <td class="text-end">
-                        {{ number_format($cotizacion->precio_total, 2) }} {{ $cotizacion->moneda }}
+                        {{ number_format($cotizacion->precio_total, 2, ',', '.') }} {{ $cotizacion->moneda }}
                         <span class="d-block small text-muted">Sujeto al precio de la TRM del día</span>
                     </td>
                 </tr>
@@ -210,30 +210,32 @@
                 </p>
             </div>
 
-            @if($cotizacion->chofer)
-                <div class="section-title">Chofer asignado</div>
+            <div class="section-title">Detalles aduaneros y logísticos</div>
 
-                <table class="table table-bordered table-sm table-condensed mb-3">
-                    <tbody>
-                    <tr>
-                        <th style="width: 30%;">Nombre</th>
-                        <td>{{ $cotizacion->chofer->nombre_completo }}</td>
-                    </tr>
-                    <tr>
-                        <th>Cédula</th>
-                        <td>{{ $cotizacion->chofer->cedula }}</td>
-                    </tr>
-                    <tr>
-                        <th>Chuto</th>
-                        <td>{{ $cotizacion->chofer->placa_chuto ?: 'N/A' }} - {{ $cotizacion->chofer->marca_chuto ?: 'N/A' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Batea</th>
-                        <td>{{ $cotizacion->chofer->placa_batea ?: 'N/A' }} - {{ $cotizacion->chofer->marca_batea ?: 'N/A' }}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            @endif
+            <table class="table table-bordered table-sm table-condensed mb-3">
+                <tbody>
+                <tr>
+                    <th style="width: 40%;">Tipo de documentación</th>
+                    <td>{{ $cotizacion->tipo_documentacion === 'DTAI' ? 'DTAI' : 'Documentación simple' }}</td>
+                </tr>
+                <tr>
+                    <th>Doble papelería</th>
+                    <td>{{ $cotizacion->doble_papeleria ? 'Sí' : 'No' }}</td>
+                </tr>
+                <tr>
+                    <th>Gastos logísticos</th>
+                    <td>{{ number_format($cotizacion->gastos_logisticos, 2, ',', '.') }} {{ $cotizacion->moneda }}</td>
+                </tr>
+                <tr>
+                    <th>Cruce de frontera</th>
+                    <td>{{ number_format($cotizacion->cruce_frontera, 2, ',', '.') }} {{ $cotizacion->moneda }}</td>
+                </tr>
+                <tr>
+                    <th>Transbordo</th>
+                    <td>{{ number_format($cotizacion->transbordo, 2, ',', '.') }} {{ $cotizacion->moneda }}</td>
+                </tr>
+                </tbody>
+            </table>
 
             <div class="section-title">Tarifa cubre / no cubre</div>
 

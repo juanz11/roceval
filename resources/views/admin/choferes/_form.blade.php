@@ -141,7 +141,7 @@
                     <tr>
                         <td>{{ $doc->titulo }}</td>
                         <td>
-                            <a href="{{ \Illuminate\Support\Facades\Storage::url($doc->ruta_archivo) }}" target="_blank" rel="noopener">{{ $doc->nombre_original ?? 'Ver archivo' }}</a>
+                            <a href="{{ \Illuminate\Support\Facades\Storage::disk('public')->url($doc->ruta_archivo) }}" target="_blank" rel="noopener">{{ $doc->nombre_original ?? 'Ver archivo' }}</a>
                         </td>
                         <td>
                             <form action="{{ route('admin.choferes.documentos.destroy', [$chofer, $doc]) }}" method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este documento?');">

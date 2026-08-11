@@ -103,9 +103,8 @@ class SolicitudController extends Controller
             return redirect()->route('admin.login.show');
         }
         $cotizacion = $solicitud->cotizacion;
-        $choferes = Chofer::orderBy('nombre')->orderBy('apellidos')->get();
 
-        return view('admin.solicitudes.cotizar', compact('solicitud', 'cotizacion', 'choferes'));
+        return view('admin.solicitudes.cotizar', compact('solicitud', 'cotizacion'));
     }
 
     public function guardarCotizacion(Request $request, Solicitud $solicitud)
@@ -115,18 +114,23 @@ class SolicitudController extends Controller
         }
 
         $data = $request->validate([
-            'chofer_id'       => 'nullable|exists:choferes,id',
-            'precio_total'    => 'required|numeric|min:0',
-            'moneda'          => 'required|string|max:10',
-            'tiempo_transito' => 'nullable|string|max:255',
-            'validez_oferta'  => 'nullable|string|max:255',
-            'incluye_aduanas' => 'required|boolean',
-            'incluye_seguro'  => 'required|boolean',
-            'observaciones'   => 'nullable|string',
+            'precio_total'     => 'required|numeric|min:0',
+            'moneda'           => 'required|string|max:10',
+            'tiempo_transito'  => 'nullable|string|max:255',
+            'validez_oferta'   => 'nullable|string|max:255',
+            'incluye_aduanas'  => 'required|boolean',
+            'incluye_seguro'   => 'required|boolean',
+            'observaciones'    => 'nullable|string',
+            'tipo_documentacion' => 'required|in:simple,DTAI',
+            'doble_papeleria'  => 'required|boolean',
+            'gastos_logisticos' => 'nullable|numeric|min:0',
+            'cruce_frontera'   => 'nullable|numeric|min:0',
+            'transbordo'       => 'nullable|numeric|min:0',
         ]);
 
         $data['incluye_aduanas'] = (bool) $data['incluye_aduanas'];
         $data['incluye_seguro'] = (bool) $data['incluye_seguro'];
+        $data['doble_papeleria'] = (bool) $data['doble_papeleria'];
 
         Cotizacion::updateOrCreate(
             ['solicitud_id' => $solicitud->id],
@@ -136,7 +140,7 @@ class SolicitudController extends Controller
         $solicitud->update(['estado' => 'cotizada']);
 
         $cotizacion = $solicitud->cotizacion ?? $solicitud->refresh()->cotizacion;
-        $cotizacion->load('solicitud', 'chofer');
+        $cotizacion->load('solicitud');
 
         $adminEmails = User::where('role', 'admin')->pluck('email')->filter()->values()->all();
 
@@ -171,7 +175,7 @@ class SolicitudController extends Controller
             return redirect()->route('admin.login.show');
         }
 
-        $cotizacion->load('solicitud', 'chofer');
+        $cotizacion->load('solicitud');
 
         return view('admin.cotizaciones.show', compact('cotizacion'));
     }

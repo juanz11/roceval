@@ -95,35 +95,8 @@
                             $precioTotalRaw = $precioTotalRaw !== '' && $precioTotalRaw !== null ? number_format((float) $precioTotalRaw, 2, '.', '') : '0.00';
                             $precioTotalDisplay = number_format((float) $precioTotalRaw, 2, ',', '.');
                         @endphp
-                        <input type="text" inputmode="decimal" class="form-control" id="precio_total_display" required value="{{ $precioTotalDisplay }}">
+                        <input type="text" inputmode="decimal" class="form-control money-input" id="precio_total_display" data-target="precio_total" required value="{{ $precioTotalDisplay }}">
                         <input type="hidden" id="precio_total" name="precio_total" value="{{ $precioTotalRaw }}">
-                        <script>
-                            (function() {
-                                const display = document.getElementById('precio_total_display');
-                                const hidden = document.getElementById('precio_total');
-
-                                function parseRaw(value) {
-                                    const num = parseFloat(String(value).replace(/\./g, '').replace(/,/g, '.'));
-                                    return isNaN(num) ? 0 : num;
-                                }
-
-                                function formatMoney(num) {
-                                    const [int, dec] = Number(num).toFixed(2).split('.');
-                                    const intFmt = int.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-                                    return intFmt + ',' + dec;
-                                }
-
-                                display.addEventListener('input', function() {
-                                    hidden.value = parseRaw(this.value).toFixed(2);
-                                });
-
-                                display.addEventListener('blur', function() {
-                                    const num = parseRaw(this.value);
-                                    this.value = formatMoney(num);
-                                    hidden.value = num.toFixed(2);
-                                });
-                            })();
-                        </script>
                         @error('precio_total')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
@@ -196,23 +169,69 @@
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-md-6 mb-3">
-                        <label for="chofer_id" class="form-label">Chofer asociado</label>
+                    <div class="col-md-4 mb-3">
+                        <label for="tipo_documentacion" class="form-label">Tipo de documentación *</label>
                         @php
-                            $choferActual = old('chofer_id', $cotizacion->chofer_id ?? '');
+                            $tipoDocumentacionActual = old('tipo_documentacion', $cotizacion->tipo_documentacion ?? 'simple');
                         @endphp
-                        <select id="chofer_id" name="chofer_id" class="form-select">
-                            <option value="">Sin chofer asignado</option>
-                            @foreach($choferes as $chofer)
-                                <option value="{{ $chofer->id }}" {{ (string) $choferActual === (string) $chofer->id ? 'selected' : '' }}>
-                                    {{ $chofer->nombre_completo }} - C.I. {{ $chofer->cedula }}@if($chofer->placa_chuto) (Placa {{ $chofer->placa_chuto }})@endif
-                                </option>
-                            @endforeach
+                        <select id="tipo_documentacion" name="tipo_documentacion" class="form-select" required>
+                            <option value="simple" {{ $tipoDocumentacionActual === 'simple' ? 'selected' : '' }}>Documentación simple</option>
+                            <option value="DTAI" {{ $tipoDocumentacionActual === 'DTAI' ? 'selected' : '' }}>DTAI</option>
                         </select>
-                        @if($choferes->isEmpty())
-                            <div class="form-text">No hay choferes registrados. <a href="{{ route('admin.choferes.create') }}">Registrar chofer</a>.</div>
-                        @endif
-                        @error('chofer_id')
+                        @error('tipo_documentacion')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label d-block">¿Doble papelería? *</label>
+                        @php
+                            $doblePapeleriaActual = (int) old('doble_papeleria', $cotizacion->doble_papeleria ?? 0);
+                        @endphp
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="doble_papeleria" id="doble_papeleria_si" value="1" {{ $doblePapeleriaActual ? 'checked' : '' }}>
+                            <label class="form-check-label" for="doble_papeleria_si">Sí</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="doble_papeleria" id="doble_papeleria_no" value="0" {{ !$doblePapeleriaActual ? 'checked' : '' }}>
+                            <label class="form-check-label" for="doble_papeleria_no">No</label>
+                        </div>
+                        @error('doble_papeleria')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="gastos_logisticos_display" class="form-label">Gastos logísticos</label>
+                        @php
+                            $gastosLogisticos = (float) old('gastos_logisticos', $cotizacion->gastos_logisticos ?? 0);
+                        @endphp
+                        <input type="text" inputmode="decimal" class="form-control money-input" id="gastos_logisticos_display" data-target="gastos_logisticos" value="{{ number_format($gastosLogisticos, 2, ',', '.') }}">
+                        <input type="hidden" id="gastos_logisticos" name="gastos_logisticos" value="{{ number_format($gastosLogisticos, 2, '.', '') }}">
+                        @error('gastos_logisticos')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label for="cruce_frontera_display" class="form-label">Cruce de frontera</label>
+                        @php
+                            $cruceFrontera = (float) old('cruce_frontera', $cotizacion->cruce_frontera ?? 0);
+                        @endphp
+                        <input type="text" inputmode="decimal" class="form-control money-input" id="cruce_frontera_display" data-target="cruce_frontera" value="{{ number_format($cruceFrontera, 2, ',', '.') }}">
+                        <input type="hidden" id="cruce_frontera" name="cruce_frontera" value="{{ number_format($cruceFrontera, 2, '.', '') }}">
+                        @error('cruce_frontera')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="transbordo_display" class="form-label">Transbordo</label>
+                        @php
+                            $transbordo = (float) old('transbordo', $cotizacion->transbordo ?? 0);
+                        @endphp
+                        <input type="text" inputmode="decimal" class="form-control money-input" id="transbordo_display" data-target="transbordo" value="{{ number_format($transbordo, 2, ',', '.') }}">
+                        <input type="hidden" id="transbordo" name="transbordo" value="{{ number_format($transbordo, 2, '.', '') }}">
+                        @error('transbordo')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>
@@ -235,5 +254,32 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function parseMoney(value) {
+        const num = parseFloat(String(value).replace(/\./g, '').replace(/,/g, '.'));
+        return isNaN(num) ? 0 : num;
+    }
+
+    function formatMoney(num) {
+        const [int, dec] = Number(num).toFixed(2).split('.');
+        const intFmt = int.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        return intFmt + ',' + dec;
+    }
+
+    document.querySelectorAll('.money-input').forEach(function(display) {
+        const hidden = document.getElementById(display.dataset.target);
+        if (!hidden) return;
+
+        display.addEventListener('input', function() {
+            hidden.value = parseMoney(this.value).toFixed(2);
+        });
+
+        display.addEventListener('blur', function() {
+            const num = parseMoney(this.value);
+            this.value = formatMoney(num);
+            hidden.value = num.toFixed(2);
+        });
+    });
+</script>
 </body>
 </html>

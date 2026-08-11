@@ -21,6 +21,11 @@ class Cotizacion extends Model
         'incluye_aduanas',
         'incluye_seguro',
         'observaciones',
+        'tipo_documentacion',
+        'doble_papeleria',
+        'gastos_logisticos',
+        'cruce_frontera',
+        'transbordo',
     ];
 
     public function solicitud()
