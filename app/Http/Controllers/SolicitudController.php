@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\CotizacionGeneradaMail;
 use App\Mail\SolicitudAceptadaMail;
+use App\Models\Chofer;
 use App\Models\Solicitud;
 use App\Models\Cotizacion;
 use App\Models\User;
@@ -102,8 +103,9 @@ class SolicitudController extends Controller
             return redirect()->route('admin.login.show');
         }
         $cotizacion = $solicitud->cotizacion;
+        $choferes = Chofer::orderBy('nombre')->orderBy('apellidos')->get();
 
-        return view('admin.solicitudes.cotizar', compact('solicitud', 'cotizacion'));
+        return view('admin.solicitudes.cotizar', compact('solicitud', 'cotizacion', 'choferes'));
     }
 
     public function guardarCotizacion(Request $request, Solicitud $solicitud)
@@ -113,6 +115,7 @@ class SolicitudController extends Controller
         }
 
         $data = $request->validate([
+            'chofer_id'       => 'nullable|exists:choferes,id',
             'precio_total'    => 'required|numeric|min:0',
             'moneda'          => 'required|string|max:10',
             'tiempo_transito' => 'nullable|string|max:255',
@@ -133,7 +136,7 @@ class SolicitudController extends Controller
         $solicitud->update(['estado' => 'cotizada']);
 
         $cotizacion = $solicitud->cotizacion ?? $solicitud->refresh()->cotizacion;
-        $cotizacion->load('solicitud');
+        $cotizacion->load('solicitud', 'chofer');
 
         $adminEmails = User::where('role', 'admin')->pluck('email')->filter()->values()->all();
 
@@ -168,7 +171,7 @@ class SolicitudController extends Controller
             return redirect()->route('admin.login.show');
         }
 
-        $cotizacion->load('solicitud');
+        $cotizacion->load('solicitud', 'chofer');
 
         return view('admin.cotizaciones.show', compact('cotizacion'));
     }

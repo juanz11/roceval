@@ -89,8 +89,41 @@
 
                 <div class="row mb-3">
                     <div class="col-md-4 mb-3">
-                        <label for="precio_total" class="form-label">Precio total *</label>
-                        <input type="number" step="0.01" min="0" class="form-control" id="precio_total" name="precio_total" required value="{{ old('precio_total', $cotizacion->precio_total ?? '') }}">
+                        <label for="precio_total_display" class="form-label">Precio total *</label>
+                        @php
+                            $precioTotalRaw = old('precio_total', $cotizacion->precio_total ?? '');
+                            $precioTotalRaw = $precioTotalRaw !== '' && $precioTotalRaw !== null ? number_format((float) $precioTotalRaw, 2, '.', '') : '0.00';
+                            $precioTotalDisplay = number_format((float) $precioTotalRaw, 2, ',', '.');
+                        @endphp
+                        <input type="text" inputmode="decimal" class="form-control" id="precio_total_display" required value="{{ $precioTotalDisplay }}">
+                        <input type="hidden" id="precio_total" name="precio_total" value="{{ $precioTotalRaw }}">
+                        <script>
+                            (function() {
+                                const display = document.getElementById('precio_total_display');
+                                const hidden = document.getElementById('precio_total');
+
+                                function parseRaw(value) {
+                                    const num = parseFloat(String(value).replace(/\./g, '').replace(/,/g, '.'));
+                                    return isNaN(num) ? 0 : num;
+                                }
+
+                                function formatMoney(num) {
+                                    const [int, dec] = Number(num).toFixed(2).split('.');
+                                    const intFmt = int.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                                    return intFmt + ',' + dec;
+                                }
+
+                                display.addEventListener('input', function() {
+                                    hidden.value = parseRaw(this.value).toFixed(2);
+                                });
+
+                                display.addEventListener('blur', function() {
+                                    const num = parseRaw(this.value);
+                                    this.value = formatMoney(num);
+                                    hidden.value = num.toFixed(2);
+                                });
+                            })();
+                        </script>
                         @error('precio_total')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
@@ -157,6 +190,29 @@
                             <label class="form-check-label" for="seguro_no">No</label>
                         </div>
                         @error('incluye_seguro')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3">
+                        <label for="chofer_id" class="form-label">Chofer asociado</label>
+                        @php
+                            $choferActual = old('chofer_id', $cotizacion->chofer_id ?? '');
+                        @endphp
+                        <select id="chofer_id" name="chofer_id" class="form-select">
+                            <option value="">Sin chofer asignado</option>
+                            @foreach($choferes as $chofer)
+                                <option value="{{ $chofer->id }}" {{ (string) $choferActual === (string) $chofer->id ? 'selected' : '' }}>
+                                    {{ $chofer->nombre_completo }} - C.I. {{ $chofer->cedula }}@if($chofer->placa_chuto) (Placa {{ $chofer->placa_chuto }})@endif
+                                </option>
+                            @endforeach
+                        </select>
+                        @if($choferes->isEmpty())
+                            <div class="form-text">No hay choferes registrados. <a href="{{ route('admin.choferes.create') }}">Registrar chofer</a>.</div>
+                        @endif
+                        @error('chofer_id')
                             <div class="text-danger small">{{ $message }}</div>
                         @enderror
                     </div>

@@ -210,6 +210,31 @@
                 </p>
             </div>
 
+            @if($cotizacion->chofer)
+                <div class="section-title">Chofer asignado</div>
+
+                <table class="table table-bordered table-sm table-condensed mb-3">
+                    <tbody>
+                    <tr>
+                        <th style="width: 30%;">Nombre</th>
+                        <td>{{ $cotizacion->chofer->nombre_completo }}</td>
+                    </tr>
+                    <tr>
+                        <th>Cédula</th>
+                        <td>{{ $cotizacion->chofer->cedula }}</td>
+                    </tr>
+                    <tr>
+                        <th>Chuto</th>
+                        <td>{{ $cotizacion->chofer->placa_chuto ?: 'N/A' }} - {{ $cotizacion->chofer->marca_chuto ?: 'N/A' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Batea</th>
+                        <td>{{ $cotizacion->chofer->placa_batea ?: 'N/A' }} - {{ $cotizacion->chofer->marca_batea ?: 'N/A' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            @endif
+
             <div class="section-title">Tarifa cubre / no cubre</div>
 
             <div class="row" style="font-size: 0.8rem;">
@@ -257,10 +282,23 @@
                 <div style="font-size: 0.8rem;" class="mb-3">
                     <p class="mb-1">El pago de las facturas se realizaría de la siguiente manera:</p>
                     <p class="mb-1"><strong>Depósito en la cuenta de TRANSPORTE Y COMERCIALIZADORA ROCEVAL S.A.S:</strong></p>
+
+                    <p class="mb-1"><strong>Transferencia en pesos (COP):</strong></p>
                     <ul class="mb-2">
                         <li>Tipo: Cuenta de ahorro</li>
                         <li>Número de cuenta: 82400002244</li>
                         <li>Banco: Bancolombia</li>
+                        <li>Beneficiario: Transporte y Comercializadora Roceval S.A.S</li>
+                        <li>NIT: 901.101.398-8</li>
+                        <li>Correo: transporteroceval@gmail.com</li>
+                    </ul>
+
+                    <p class="mb-1"><strong>Transferencia en dólares (USD):</strong></p>
+                    <ul class="mb-2">
+                        <li>Tipo: Cuenta corriente</li>
+                        <li>Número de cuenta: POR DEFINIR</li>
+                        <li>Banco: POR DEFINIR</li>
+                        <li>SWIFT / ABA: POR DEFINIR</li>
                         <li>Beneficiario: Transporte y Comercializadora Roceval S.A.S</li>
                         <li>NIT: 901.101.398-8</li>
                         <li>Correo: transporteroceval@gmail.com</li>

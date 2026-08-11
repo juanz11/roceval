@@ -63,6 +63,28 @@
         </tr>
     </table>
 
+    @if($cotizacion->chofer)
+        <h2>Chofer asignado</h2>
+        <table>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ $cotizacion->chofer->nombre_completo }}</td>
+            </tr>
+            <tr>
+                <th>Cédula</th>
+                <td>{{ $cotizacion->chofer->cedula }}</td>
+            </tr>
+            <tr>
+                <th>Chuto</th>
+                <td>{{ $cotizacion->chofer->placa_chuto ?: 'N/A' }} - {{ $cotizacion->chofer->marca_chuto ?: 'N/A' }}</td>
+            </tr>
+            <tr>
+                <th>Batea</th>
+                <td>{{ $cotizacion->chofer->placa_batea ?: 'N/A' }} - {{ $cotizacion->chofer->marca_batea ?: 'N/A' }}</td>
+            </tr>
+        </table>
+    @endif
+
     <h2>Detalle de cotización</h2>
     <table>
         <tr>
